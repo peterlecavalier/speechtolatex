@@ -1,0 +1,7 @@
+CREATE TABLE userstable (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255),
+    UserPassword TEXT,
+    UserFirstName TEXT,
+    UserLastName TEXT
+);
