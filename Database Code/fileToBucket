@@ -1,0 +1,6 @@
+def upload_file_to_gcs(bucketName, localFilePath, destinationBlobName):
+   storage_client = storage.Client()
+   bucket = storage_client.bucket(bucketName)
+   blob = bucket.blob(destinationBlobName)
+   blob.upload_from_filename(localFilePath)
+   return blob.public_url

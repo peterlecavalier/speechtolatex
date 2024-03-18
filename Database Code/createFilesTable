@@ -1,0 +1,9 @@
+CREATE TABLE filestable (
+    FileID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    FilePath TEXT,
+    FileSize INT,
+    FileTitle TEXT,
+    UpdateTime TIME,
+    FOREIGN KEY (UserID) REFERENCES userstable(UserID)
+);

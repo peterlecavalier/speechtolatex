@@ -1,0 +1,10 @@
+def insert_file_reference(db_config, user_id, file_path, file_size, file_title, update_time):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    sql = ("INSERT INTO filestable (UserID, FilePath, FileSize, FileTitle, UpdateTime) "
+           "VALUES (%s, %s, %s, %s, %s)")
+    val = (user_id, file_path, file_size, file_title, update_time)
+    cursor.execute(sql, val)
+    conn.commit()
+    cursor.close()
+    conn.close()
