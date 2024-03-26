@@ -1,9 +1,11 @@
+import datetime
 from flask import Flask, request, jsonify
 import pymysql
 import firebase_admin
-from firebase_admin import credentials, auth
+from firebase_admin import credentials, auth, storage
 from dotenv import load_dotenv
 import os
+from convert import compile_latex, upload_pdf
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,8 +14,9 @@ load_dotenv()
 app = Flask(__name__)
 
 # Initialize Firebase Admin SDK
+FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID')
 cred = credentials.Certificate('firebase.json')
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {'storageBucket': f'{FIREBASE_PROJECT_ID}.appspot.com'})
 
 
 # Load MySQL Database Configuration from environment variables
@@ -142,6 +145,61 @@ def add_file():
                 cursor.execute(sql, (title, text, latex, user_id))
                 connection.commit()
                 return jsonify({'message': 'File added successfully.'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# Create a file, user must be auth
+@app.route('/storage', methods=['POST'])
+def upload_pdf_logic():
+    # Verify Firebase auth token
+    id_token = request.headers.get('Authorization').split('Bearer ')[1]
+    try:
+        decoded_token = auth.verify_id_token(id_token)
+        user_id = decoded_token['uid']
+    except Exception as e:
+        return jsonify({'error': 'Invalid or expired Firebase token.'}), 401
+
+    # Extract file data from request
+    try:
+        data = request.json
+        id = data.get('id')
+        latex = data.get('latex')
+        
+        if not any((id, latex)):
+            return jsonify({'error': 'id and latex string required.'}), 400
+    except Exception as e:
+        return jsonify({'error': 'Invalid input.'}), 400
+
+    # Insert file into MySQL database
+    try:
+        compile_latex(id, latex)
+        upload_pdf(id, user_id)
+        return jsonify({'message': 'PDF uploaded successfully.'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# Create a file, user must be auth
+@app.route('/storage/<id>', methods=['GET'])
+def get_pdf(id):
+    # Verify Firebase auth token
+    id_token = request.headers.get('Authorization').split('Bearer ')[1]
+    try:
+        decoded_token = auth.verify_id_token(id_token)
+        user_id = decoded_token['uid']
+    except Exception as e:
+        return jsonify({'error': 'Invalid or expired Firebase token.'}), 401
+
+
+
+    # Insert file into MySQL database
+    try:
+        file_path = f'pdfs/{id}.pdf'
+        bucket = storage.bucket()
+        blob = bucket.blob(file_path)
+
+        url = blob.generate_signed_url(version='v4', expiration=datetime.timedelta(days=1), method='GET')
+        return jsonify({'url': url}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

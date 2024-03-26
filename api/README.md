@@ -19,8 +19,10 @@ DB_HOST=""
 DB_USER=""
 DB_PASSWORD=""
 DB_DATABASE=""
+FIREBASE_PROJECT_ID=""
 ```
 6. Put the Firebase admin json as `firebase.json`. Firebase project home > click the cog in the top left > Project Settings > Service accounts > Generate new private key
+7. Install some sort of pdflatex cli tool
 
 ## Usage
 `python3 app.py`

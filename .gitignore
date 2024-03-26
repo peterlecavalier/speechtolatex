@@ -1,2 +1,3 @@
 firebase.json
 .env
+api/output/*
