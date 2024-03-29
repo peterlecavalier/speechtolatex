@@ -26,3 +26,9 @@ FIREBASE_PROJECT_ID=""
 
 ## Usage
 `python3 app.py`
+
+
+## TODO
+- Cors so we can have requests come from client side
+- Error handling is a little strange
+- If there is an error compiling latex, the api just hangs and never sends a response. This has to do with the fact that the python code is not actually compiling the latex, rather it's creating a subprocess and using the `pdflatex` command.
