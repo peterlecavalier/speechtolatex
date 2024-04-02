@@ -1,3 +1,4 @@
 firebase.json
 .env
 scrape_latex/papers/
+api/output/*
