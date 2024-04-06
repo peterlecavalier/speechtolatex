@@ -6,7 +6,7 @@ from firebase_admin import credentials, auth, storage
 from dotenv import load_dotenv
 import os
 from convert import compile_latex, upload_pdf
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 # Load environment variables from .env file
 load_dotenv()
@@ -32,8 +32,10 @@ db_config = {
 
 # Get all files owned by a user
 @app.route('/files', methods=['GET'])
+@cross_origin()
 def get_files():
     # Verify Firebase auth token
+
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
     try:
         decoded_token = auth.verify_id_token(id_token)
@@ -54,6 +56,7 @@ def get_files():
 
 # Get a file, user must own the file
 @app.route('/files/<int:file_id>', methods=['GET'])
+@cross_origin()
 def get_file(file_id):
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -79,6 +82,7 @@ def get_file(file_id):
     
 
 @app.route('/files/<int:file_id>', methods=['PATCH'])
+@cross_origin()
 def patch_file(file_id):
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -131,6 +135,7 @@ def patch_file(file_id):
 
 # Delete a file, user must own the file
 @app.route('/files/<int:file_id>', methods=['DELETE'])
+@cross_origin()
 def delete_file(file_id):
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -166,6 +171,7 @@ def delete_file(file_id):
 
 # Create a file, user must be auth
 @app.route('/files', methods=['POST'])
+@cross_origin()
 def add_file():
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -204,6 +210,7 @@ def add_file():
 
 # Create a file, user must be auth
 @app.route('/storage', methods=['POST'])
+@cross_origin()
 def upload_pdf_logic():
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -233,6 +240,7 @@ def upload_pdf_logic():
     
 # Create a file, user must be auth
 @app.route('/storage/<id>', methods=['GET'])
+@cross_origin()
 def get_pdf(id):
     # Verify Firebase auth token
     id_token = request.headers.get('Authorization').split('Bearer ')[1]
@@ -240,7 +248,7 @@ def get_pdf(id):
         decoded_token = auth.verify_id_token(id_token)
         user_id = decoded_token['uid']
     except Exception as e:
-        return jsonify({'error': 'Invalid or expired Firebase token.'}), 401
+        return jsonify({'error': 'Invalid or xfexpired Firebase token.'}), 401
 
 
 
