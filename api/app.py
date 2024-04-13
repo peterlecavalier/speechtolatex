@@ -265,7 +265,7 @@ def get_pdf(id):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('ping', methods=['GET'])
+@app.route('/ping', methods=['GET'])
 @cross_origin()
 def get_ping():
     return jsonify({"message": "pong"}), 200
