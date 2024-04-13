@@ -2,3 +2,4 @@ flask
 transformers
 librosa
 pydub
+torch
