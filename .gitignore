@@ -2,3 +2,6 @@ firebase.json
 .env
 scrape_latex/papers/
 api/output/*
+api/*.pem
+__pycache__/
+api/nohup.out
