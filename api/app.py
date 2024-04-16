@@ -36,9 +36,8 @@ db_config = {
 @cross_origin()
 def get_files():
     # Verify Firebase auth token
-
-    id_token = request.headers.get('Authorization').split('Bearer ')[1]
     try:
+        id_token = request.headers.get('Authorization').split('Bearer ')[1]
         decoded_token = auth.verify_id_token(id_token)
         user_id = decoded_token['uid']
     except Exception as e:
