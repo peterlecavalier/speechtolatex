@@ -1,5 +1,7 @@
 # Speech-To-LaTeX
 
+![Speech-to-LaTeX Logo](speech_to_latex.png "Speech-to-LaTeX")
+
 Our platform creates a seamless experience for technical authors to effectively write mathematical papers in LaTeX format - without needing to learn how to code.
 
 Simply record audio and our tool will translate it into LaTeX document, with integrated PDF compilation.
