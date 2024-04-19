@@ -1,6 +1,11 @@
 # Speech-To-LaTeX
 
-![Speech-to-LaTeX Logo](speech_to_latex.png "Speech-to-LaTeX")
+<p align="center">
+  <img src="speech_to_latex.png" alt="Speech-to-LaTeX Logo" width="256"/>
+</p>
+
+
+<!-- ![Speech-to-LaTeX Logo](speech_to_latex.png "Speech-to-LaTeX") -->
 
 Our platform creates a seamless experience for technical authors to effectively write mathematical papers in LaTeX format - without needing to learn how to code.
 
